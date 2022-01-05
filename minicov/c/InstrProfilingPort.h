@@ -116,7 +116,9 @@ static inline size_t getpagesize() {
   return S.dwPageSize;
 }
 #else /* defined(_WIN32) */
-#include <stddef.h>
+
+typedef unsigned long size_t;
+
 static inline size_t getpagesize() {
   // Not used since we don't support continuous mode.
   return 1;

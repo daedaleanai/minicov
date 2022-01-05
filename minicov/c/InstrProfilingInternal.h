@@ -9,8 +9,6 @@
 #ifndef PROFILE_INSTRPROFILING_INTERNALH_
 #define PROFILE_INSTRPROFILING_INTERNALH_
 
-#include <stddef.h>
-
 #include "InstrProfiling.h"
 
 /*!

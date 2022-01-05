@@ -21,7 +21,9 @@
 #define INSTR_PROF_VALUE_PROF_DATA
 #include "profile/InstrProfData.inc"
 
-COMPILER_RT_VISIBILITY void (*FreeHook)(void *) = NULL;
+#define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
+
+COMPILER_RT_VISIBILITY void (*FreeHook)(void *) = 0;
 static ProfBufferIO TheBufferIO;
 #define VP_BUFFER_SIZE 8 * 1024
 static uint8_t BufferIOBuffer[VP_BUFFER_SIZE];
@@ -294,11 +296,11 @@ lprofWriteDataImpl(ProfDataWriter *Writer, const __llvm_profile_data *DataBegin,
   /* Write the profile data. */
   ProfDataIOVec IOVecData[] = {
       {DataBegin, sizeof(__llvm_profile_data), DataSize, 0},
-      {NULL, sizeof(uint8_t), PaddingBytesBeforeCounters, 1},
+      {0, sizeof(uint8_t), PaddingBytesBeforeCounters, 1},
       {CountersBegin, sizeof(uint64_t), CountersSize, 0},
-      {NULL, sizeof(uint8_t), PaddingBytesAfterCounters, 1},
-      {SkipNameDataWrite ? NULL : NamesBegin, sizeof(uint8_t), NamesSize, 0},
-      {NULL, sizeof(uint8_t), PaddingBytesAfterNames, 1}};
+      {0, sizeof(uint8_t), PaddingBytesAfterCounters, 1},
+      {SkipNameDataWrite ? 0 : NamesBegin, sizeof(uint8_t), NamesSize, 0},
+      {0, sizeof(uint8_t), PaddingBytesAfterNames, 1}};
   if (Writer->Write(Writer, IOVecData, sizeof(IOVecData) / sizeof(*IOVecData)))
     return -1;
 

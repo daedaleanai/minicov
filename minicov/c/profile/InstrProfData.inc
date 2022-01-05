@@ -129,7 +129,7 @@ INSTR_PROF_VALUE_NODE(PtrToNodeT, llvm::Type::getInt8PtrTy(Ctx), Next, \
 #endif
 INSTR_PROF_RAW_HEADER(uint64_t, Magic, __llvm_profile_get_magic())
 INSTR_PROF_RAW_HEADER(uint64_t, Version, __llvm_profile_get_version())
-INSTR_PROF_RAW_HEADER(uint64_t, BinaryIdsSize, __llvm_write_binary_ids(NULL))
+INSTR_PROF_RAW_HEADER(uint64_t, BinaryIdsSize, __llvm_write_binary_ids(0))
 INSTR_PROF_RAW_HEADER(uint64_t, DataSize, DataSize)
 INSTR_PROF_RAW_HEADER(uint64_t, PaddingBytesBeforeCounters, PaddingBytesBeforeCounters)
 INSTR_PROF_RAW_HEADER(uint64_t, CountersSize, CountersSize)
