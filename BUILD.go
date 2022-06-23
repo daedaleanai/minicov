@@ -1,8 +1,8 @@
 package minicov
 
 import (
-	"exp-utest/ulib"
-	"exp-utest/RULES/testlib"
+	"utest/ulib"
+	"utest/RULES/testlib"
 )
 
 var Lib = testlib.TestLib{
