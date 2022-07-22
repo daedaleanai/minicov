@@ -9,7 +9,7 @@
 // Note: This is linked into the Darwin kernel, and must remain compatible
 // with freestanding compilation. See `darwin_add_builtin_libraries`.
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && !defined(UEFI)
 /* For _alloca */
 #include <malloc.h>
 #endif
@@ -43,9 +43,12 @@ COMPILER_RT_VISIBILITY uint32_t lprofBufferWriter(ProfDataWriter *This,
   char **Buffer = (char **)&This->WriterCtx;
   for (I = 0; I < NumIOVecs; I++) {
     size_t Length = IOVecs[I].ElmSize * IOVecs[I].NumElm;
-    if (IOVecs[I].Data)
-      memcpy(*Buffer, IOVecs[I].Data, Length);
-    else if (IOVecs[I].UseZeroPadding) {
+    if (IOVecs[I].Data) {
+        for (size_t i = 0; i < Length; ++i) {
+            (*Buffer)[i] = ((const char *)(IOVecs[I].Data))[i];
+        }
+        //memcpy(*Buffer, IOVecs[I].Data, Length);
+    } else if (IOVecs[I].UseZeroPadding) {
       /* Allocating the buffer should zero fill. */
     }
     *Buffer += Length;
@@ -292,6 +295,7 @@ lprofWriteDataImpl(ProfDataWriter *Writer, const __llvm_profile_data *DataBegin,
   /* Write the binary id lengths and data. */
   if (__llvm_write_binary_ids(Writer) == -1)
     return -1;
+
 
   /* Write the profile data. */
   ProfDataIOVec IOVecData[] = {

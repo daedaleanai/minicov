@@ -12,7 +12,7 @@
 #ifndef PROFILE_INSTRPROFILING_PORT_H_
 #define PROFILE_INSTRPROFILING_PORT_H_
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) && !defined(UEFI)
 #define COMPILER_RT_ALIGNAS(x) __declspec(align(x))
 #define COMPILER_RT_VISIBILITY
 /* FIXME: selectany does not have the same semantics as weak. */
@@ -24,7 +24,7 @@
 #define COMPILER_RT_ALWAYS_INLINE __forceinline
 #define COMPILER_RT_CLEANUP(x)
 #define COMPILER_RT_USED
-#elif __GNUC__
+#elif defined(__GNUC__) || defined(UEFI)
 #ifdef _WIN32
 #define COMPILER_RT_FTRUNCATE(f, l) _chsize(fileno(f), l)
 #define COMPILER_RT_VISIBILITY
@@ -109,12 +109,18 @@
 #endif /* DIR_SEPARATOR_2 */
 
 #if defined(_WIN32)
+#if defined(UEFI)
+static inline size_t getpagesize() {
+  return 4096;
+}
+#else /* defined(UEFI) */
 #include <windows.h>
 static inline size_t getpagesize() {
-  SYSTEM_INFO S;
-  GetNativeSystemInfo(&S);
-  return S.dwPageSize;
+    SYSTEM_INFO S;
+    GetNativeSystemInfo(&S);
+    return S.dwPageSize;
 }
+#endif /* defined(UEFI) */
 #else /* defined(_WIN32) */
 
 typedef unsigned long size_t;
