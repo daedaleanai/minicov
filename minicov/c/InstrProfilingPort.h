@@ -123,7 +123,7 @@ static inline size_t getpagesize() {
 #endif /* defined(UEFI) */
 #else /* defined(_WIN32) */
 
-typedef unsigned long size_t;
+typedef __SIZE_TYPE__ size_t;
 
 static inline size_t getpagesize() {
   // Not used since we don't support continuous mode.
