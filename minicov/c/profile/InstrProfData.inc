@@ -701,7 +701,7 @@ serializeValueProfDataFrom(ValueProfRecordClosure *Closure,
 #define INSTR_PROF_COVFUN_COFF ".lcovfun$M"
 #define INSTR_PROF_ORDERFILE_COFF ".lorderfile$M"
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(UEFI)
 /* Runtime section names and name strings.  */
 #define INSTR_PROF_DATA_SECT_NAME INSTR_PROF_DATA_COFF
 #define INSTR_PROF_NAME_SECT_NAME INSTR_PROF_NAME_COFF
